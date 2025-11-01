@@ -21,4 +21,14 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.compass_fragment_container, new CompassFragment())
                 .commit();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
