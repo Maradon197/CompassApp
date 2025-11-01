@@ -22,15 +22,18 @@ public class CompassFragment extends Fragment implements SensorEventListener
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magnetometer;
+    private Sensor lightmeter;
 
     private final float[] rotationMatrix = new float[9];
     private final float[] orientationAngles = new float[3];
     private final float[] lastAcc = new float[3];
     private final float[] lastMag = new float[3];
+    private final float[] lastLight = new float[1];
 
 
     private boolean haveAcc = false;
     private boolean haveMag = false;
+    private boolean haveLight = false;
 
     private CompassView cv;
 
@@ -52,6 +55,7 @@ public class CompassFragment extends Fragment implements SensorEventListener
         sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        lightmeter = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         if (accelerometer == null || magnetometer == null) {
             // no sensors
             Toast.makeText(requireContext(), "sensors gone", Toast.LENGTH_SHORT).show();
@@ -65,6 +69,7 @@ public class CompassFragment extends Fragment implements SensorEventListener
         // faster
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, lightmeter, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
@@ -97,6 +102,10 @@ public class CompassFragment extends Fragment implements SensorEventListener
             lastMag[1] = alpha * lastMag[1] + (1 - alpha) * event.values[1];
             lastMag[2] = alpha * lastMag[2] + (1 - alpha) * event.values[2];
             haveMag = true;
+        } else if (event.sensor.getType() == Sensor.TYPE_LIGHT)
+        {
+            lastLight[0] = event.values[0];
+            haveLight= true;
         }
 
         if (haveAcc && haveMag)
@@ -110,6 +119,11 @@ public class CompassFragment extends Fragment implements SensorEventListener
             float azimuthInDegrees = (float) Math.toDegrees(azimuthInRadian);
             cv.setAzimuth(azimuthInDegrees);
 
+        }
+
+        if(haveLight) {
+            float lux = lastLight[0];
+            
         }
     }
 }
