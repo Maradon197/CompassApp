@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- nav menu -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- compass item -->
+    <item
+        android:id="@+id/navigation_compass"
+        android:title="@string/title_compass" />
+    <!-- light item -->
+    <item
+        android:id="@+id/navigation_light"
+        android:title="@string/title_light" />
+</menu>
